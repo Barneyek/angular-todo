@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Todo } from '../../interfaces/todo'
 
 @Component({
   selector: 'todo-list',
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./todo-list.component.scss']
 })
 export class TodoListComponent implements OnInit {
-  todos: object[];
+  todos: Todo[];
   todoName: string;
   idForTodo: number;
 
@@ -35,5 +36,9 @@ export class TodoListComponent implements OnInit {
 
     this.todoName = '';
     this.idForTodo++;
+  }
+
+  deleteTodo(id: number): void {
+    this.todos =  this.todos.filter( todo => todo.id !== id)
   }
 }
