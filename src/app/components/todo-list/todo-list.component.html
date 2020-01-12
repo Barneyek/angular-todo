@@ -4,7 +4,10 @@
 <div class="todo-item" *ngFor="let todo of todos">
     <div class="todo-item-left">
       <input type="checkbox">
-      <div class="todo-item-label">{{ todo.name }}</div>
+      <div *ngIf="!todo.editing; else editingTodo" class="todo-item-label" (dblclick)="editTodo(todo)">{{ todo.name }}</div>
+      <ng-template #editingTodo>
+        <input type="text" class="todo-item-edit" [(ngModel)]="todo.name" (blur)="doneEdit(todo)" (keyup.enter)="doneEdit" autofocus>
+      </ng-template>
     </div>
     <div class="remove-item" (click)="deleteTodo(todo.id)">
       &times;
