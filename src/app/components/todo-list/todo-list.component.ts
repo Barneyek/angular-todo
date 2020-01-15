@@ -10,6 +10,7 @@ export class TodoListComponent implements OnInit {
   todos: Todo[];
   todoName: string;
   idForTodo: number;
+  beforeEditCache: string;
 
   constructor() {
   }
@@ -17,6 +18,7 @@ export class TodoListComponent implements OnInit {
   ngOnInit() {
     this.idForTodo = 4;
     this.todoName = '';
+    this.beforeEditCache = '';
     this.todos = [
       {id: 0, name: 'Event 1', completed: false, editing: false,},
       {id: 1, name: 'Event 2', completed: false, editing: false,},
@@ -41,10 +43,19 @@ export class TodoListComponent implements OnInit {
   }
 
   editTodo(todo: Todo): void {
+    this.beforeEditCache = todo.name;
     todo.editing = true;
   }
 
   doneEdit(todo: Todo): void {
+    if (todo.name.trim().length === 0) {
+      todo.name = this.beforeEditCache;
+    }
+    todo.editing = false;
+  }
+
+  cancelEdit(todo: Todo): void {
+    todo.name = this.beforeEditCache;
     todo.editing = false;
   }
 
