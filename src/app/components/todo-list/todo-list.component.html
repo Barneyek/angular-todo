@@ -30,4 +30,8 @@
     <button>Active</button>
     <button>Completed</button>
   </div>
+
+  <div *ngIf="atLeastOneCompleted()">
+    <button (click)="clearCompleted(todo)">Clear Completed</button>
+  </div>
 </div>
