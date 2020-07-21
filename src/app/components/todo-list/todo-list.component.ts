@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Todo} from '../../interfaces/todo';
-import { transition, trigger, style, animate } from '@angular/animations';
+import {transition, trigger, style, animate} from '@angular/animations';
 
 @Component({
   selector: 'todo-list',
@@ -11,29 +11,32 @@ import { transition, trigger, style, animate } from '@angular/animations';
 
       transition(':enter', [
         style({opacity: 0, transform: 'translateY(30px)'}),
-        animate(1000, style({opacity: 1,  transform: 'translateY(0)'}))
+        animate(1000, style({opacity: 1, transform: 'translateY(0)'}))
       ]),
-      
+
       transition(':leave', [
-        animate(1000, style({opacity: 0,  transform: 'translateY(30px)'}))
+        animate(1000, style({opacity: 0, transform: 'translateY(30px)'}))
       ])
     ])
   ]
 })
+
 export class TodoListComponent implements OnInit {
   todos: Todo[];
   todoName: string;
   idForTodo: number;
   beforeEditCache: string;
   filter: string;
+  anyRemainingModel: boolean;
 
   constructor() {
   }
 
   ngOnInit() {
+    this.anyRemainingModel = true;
     this.idForTodo = 4;
     this.todoName = '';
-    this.filter='all';
+    this.filter = 'all';
     this.beforeEditCache = '';
     this.todos = [
       {id: 0, name: 'Event 1', completed: false, editing: false,},
@@ -67,6 +70,8 @@ export class TodoListComponent implements OnInit {
     if (todo.name.trim().length === 0) {
       todo.name = this.beforeEditCache;
     }
+
+    this.anyRemainingModel = this.anyRemaining();
     todo.editing = false;
   }
 
@@ -79,32 +84,32 @@ export class TodoListComponent implements OnInit {
     this.todos = this.todos.filter(todo => todo.id !== id);
   }
 
-  remaining(): number{
+  remaining(): number {
     return this.todos.filter(todo => !todo.completed).length;
   }
-  
-  atLeastOneCompleted(): boolean{
+
+  atLeastOneCompleted(): boolean {
     return this.todos.filter(todo => todo.completed).length > 0;
   }
-  
-  clearCompleted(): void{
+
+  clearCompleted(): void {
     this.todos = this.todos.filter(todo => !todo.completed);
   }
-  
-  checkAllTodos(): void{
+
+  checkAllTodos(): void {
     this.todos.forEach(todo => todo.completed = (<HTMLInputElement>event.target).checked)
   }
 
+  anyRemaining(): boolean {
+    return this.remaining() !== 0;
+  }
+
   todosFiltered(): Todo[] {
-    if (this.filter === 'all')
-    {
+    if (this.filter === 'all') {
       return this.todos;
-    }
-    else if (this.filter ==='active')
-    {
+    } else if (this.filter === 'active') {
       return this.todos.filter(todo => !todo.completed)
-    }
-    else if (this.filter === 'completed'){
+    } else if (this.filter === 'completed') {
       return this.todos.filter(todo => todo.completed)
     }
     return this.todos;
