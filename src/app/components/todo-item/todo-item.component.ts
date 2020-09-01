@@ -10,7 +10,7 @@ import {TodoService} from "../../services/todo.service";
 export class TodoItemComponent implements OnInit {
   @Input() todo: Todo;
 
-  constructor(private todoService: TodoService) { }
+  constructor(public todoService: TodoService) { }
 
   ngOnInit() {
   }
